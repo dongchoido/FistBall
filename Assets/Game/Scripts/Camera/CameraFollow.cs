@@ -43,7 +43,7 @@ public class CameraFollowMultipleTargets : MonoBehaviour
         float requiredSizeY = targetBounds.size.y * 0.5f + padding;
         
         float desiredSize = Mathf.Max(requiredSizeX, requiredSizeY);
-        float finalSize = Mathf.Max(desiredSize, minOrthographicSize);
+        float finalSize = Mathf.Max(desiredSize, minOrthographicSize) + 3f;
 
         float camHeight = finalSize * 2f;
         float camWidth = camHeight * cam.aspect;
