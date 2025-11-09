@@ -18,6 +18,9 @@ public static class ConstManager
     public const string animReverseMeleeAttack = "rangeAttack";
     public const string animStunning = "stunning";
     public const string animSimulateDamage = "simulateDamage";
+
+    public const string soundMusicVolume = "MusicVolume";
+    public const string soundSFXVolume = "SFXVolume";
     public enum EffectType
     {
         Speedup,

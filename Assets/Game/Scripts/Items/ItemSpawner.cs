@@ -5,14 +5,17 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [SerializeField] float spawnInterval;
-    [SerializeField] PoolManager poolManager;
     private float timer;
+    void Start()
+    {
+        PoolManager.instance.SetupPool();
+    }
     void Update()
     {
         timer -= Time.deltaTime;
         if(timer<=0f)
         {
-            poolManager.TakeItem<Item>(ConstManager.item);
+            PoolManager.instance.TakeItem<Item>(ConstManager.item);
             timer = spawnInterval;
         }
     }

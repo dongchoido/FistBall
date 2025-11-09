@@ -19,12 +19,14 @@ public class PlayerController : MonoBehaviour,IPunchAble
     private float firstScale;
     private bool canPunch = true;
     private Coroutine punchCooldownCoroutine = null;
+    private PlayerSFX sfx;
     private void Awake()
     {
         anim = GetComponent<PlayerAnimation>();
         movement = GetComponent<PlayerMovement>();
         combat = GetComponent<PlayerCombat>();
         input = _input.GetComponent<IPlayerInput>();
+        sfx = GetComponent<PlayerSFX>();
         firstScale = transform.localScale.x;
     }
 
@@ -34,11 +36,12 @@ public class PlayerController : MonoBehaviour,IPunchAble
         {
             movement.Move(input.Horizontal);
             anim.SetVelocity(movement.Velocity());
-            if (input.Jump) { movement.Jump(); anim.SetJump(); }
+            if (input.Jump) { movement.Jump(); anim.SetJump(); sfx.Jump(); }
             if (input.Punch && canPunch)
             {
                 combat.Punch();
                 anim.SetMeleeAttack(isPlayer1);
+                sfx.Punch();
                 if (punchCooldownCoroutine != null) StopCoroutine(punchCooldownCoroutine);
                 punchCooldownCoroutine = StartCoroutine(PunchCooldown());
             }
@@ -62,7 +65,7 @@ public class PlayerController : MonoBehaviour,IPunchAble
     IEnumerator DashCoolDown(bool t)
     {
         if (!t)
-        { combat.Dash(transform.localScale.x / firstScale); isDashing = true; }
+        { combat.Dash(transform.localScale.x / firstScale); isDashing = true; sfx.Dash(); }
         canDash = false;
         yield return new WaitForSeconds(0.4f);
         isDashing = false;
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour,IPunchAble
         stunned = true;
         anim.SetSimulateDamage();
         anim.SetStunning(true);
+        sfx.Stun();
         yield return new WaitForSeconds(stunnedDuration);
         stunned = false;
         anim.SetStunning(false);

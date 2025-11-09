@@ -12,9 +12,9 @@ public class PoolManager : MonoBehaviour
         {
             instance = this;
         }
-        SetupPool();
+ 
     }
-    private void SetupPool()
+    public  void SetupPool()
     {
         ObjectPooler.SetupPool(itemPrefab, 4, ConstManager.item);
     }

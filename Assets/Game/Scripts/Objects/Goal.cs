@@ -28,8 +28,8 @@ public class Goal : MonoBehaviour
     {
         if (collision.CompareTag(ConstManager.ballTag))
         {
-            int team = isGoal1 ? 1 : 2;
-            Debug.Log("Goal for team " + team);
+            DataManager.instance.Goal(isGoal1);
+            UIManager.instance.UpdateRatio();
         }
     }
 }

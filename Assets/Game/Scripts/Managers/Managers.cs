@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
-    void Awake()
+    protected virtual void Awake()
     {
         DontDestroyOnLoad(this);
     }
