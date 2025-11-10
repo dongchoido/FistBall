@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public bool isPlaying { get; private set; }
     //private bool isPaused = false;
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-//            DontDestroyOnLoad(this);
+            //            DontDestroyOnLoad(this);
         }
+        isPlaying = false;
     }
     public void PauseGame()
     {
@@ -27,9 +28,11 @@ public class GameManager : MonoBehaviour
     public void LoadGamePlayScene()
     {
         SceneManager.LoadScene("GamePlay");
+        isPlaying = true;
     }
     public void LoadMainMenuScene()
     {
         SceneManager.LoadScene("MainMenu");
+        isPlaying = false;
     }
 }

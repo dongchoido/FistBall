@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CustomButton : MonoBehaviour
 {
     UIManager ui;
-    void Awake()
+    void Start()
     {
         ui = UIManager.instance;
     }

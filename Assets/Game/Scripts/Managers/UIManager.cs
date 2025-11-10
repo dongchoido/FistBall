@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +10,9 @@ public class UIManager : MonoBehaviour
 {
     public PausePanel pausePanel;
     public SettingPanel settingPanel;
+    public MenuPanel menuPanel;
     public RatioPanel ratioPanel;
-    [SerializeField] Button pauseButton;
+    public Button pauseButton;
     public  Slider musicSlider;
     public Slider sfxSlider;
     [SerializeField] AudioClip clickSFX;
@@ -26,7 +29,10 @@ public class UIManager : MonoBehaviour
 
         musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
         sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
-        ratioPanel.Popup(true);
+        if (GameManager.instance.isPlaying)
+        {
+            ratioPanel.Popup(true);
+        }
     }
     public void ShowPausePanel()
     {
@@ -45,16 +51,40 @@ public class UIManager : MonoBehaviour
         ratioPanel.Popup(true);
     }
     public void ShowSettingPanel()
-    {
-        settingPanel.gameObject.SetActive(true);
+{
+    settingPanel.gameObject.SetActive(true);
+
+    musicSlider.value = SoundManager.Instance.MusicVolume;
+    sfxSlider.value = SoundManager.Instance.SFXVolume;
+
+    musicSlider.onValueChanged.RemoveAllListeners();
+    sfxSlider.onValueChanged.RemoveAllListeners();
+
+    musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+    sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+
+    if (GameManager.instance.isPlaying)
         pausePanel.gameObject.SetActive(false);
-        settingPanel.Popup(true);
-    }
+    else 
+        menuPanel.gameObject.SetActive(false);
+
+    settingPanel.Popup(true);
+}
+
     public void HideSettingPanel()
     {
-        settingPanel.gameObject.SetActive(false);
-        pausePanel.gameObject.SetActive(true);
-        pausePanel.Popup(true);
+        
+        if (GameManager.instance.isPlaying)
+        {
+            settingPanel.gameObject.SetActive(false);
+            pausePanel.gameObject.SetActive(true);
+            pausePanel.Popup(true);
+        }
+        else
+        {
+            settingPanel.Popup(false);
+            menuPanel.gameObject.SetActive(true);
+        }
     }
      void OnMusicVolumeChanged(float value)
     {

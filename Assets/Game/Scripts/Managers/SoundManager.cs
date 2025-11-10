@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class SoundManager : MonoBehaviour
 {
@@ -15,16 +14,18 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance==null)
-        {
+        if (Instance == null)
             Instance = this;
-        }
+        PlayMusic(music);
 
+    }
+    void Start()
+    {
         MusicVolume = PlayerPrefs.GetFloat(ConstManager.soundMusicVolume, 1f);
         SFXVolume = PlayerPrefs.GetFloat(ConstManager.soundSFXVolume, 1f);
 
         ApplyVolumes();
-        PlayMusic(music);
+        
     }
 
     public void PlayMusic(AudioClip clip, bool loop = true)
@@ -36,13 +37,15 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        sfxSource.PlayOneShot(clip, SFXVolume);
+        sfxSource.volume = SFXVolume;
+        sfxSource.PlayOneShot(clip);
     }
 
     public void SetMusicVolume(float value)
     {
         MusicVolume = value;
         PlayerPrefs.SetFloat(ConstManager.soundMusicVolume, value);
+        PlayerPrefs.Save();
         ApplyVolumes();
     }
 
@@ -50,10 +53,13 @@ public class SoundManager : MonoBehaviour
     {
         SFXVolume = value;
         PlayerPrefs.SetFloat(ConstManager.soundSFXVolume, value);
+        PlayerPrefs.Save();
+        sfxSource.volume = value;
     }
 
     private void ApplyVolumes()
     {
         musicSource.volume = MusicVolume;
+        sfxSource.volume = SFXVolume; 
     }
 }
